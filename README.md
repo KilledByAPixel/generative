@@ -2,6 +2,8 @@
 
 Here you will find the source code for some of my longform generative works.
 
+These programs will produce a different result every time you refresh. Just right click to save.
+
 ## Open source generative art
 
 [Grayscale Bytes](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
