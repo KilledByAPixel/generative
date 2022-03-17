@@ -8,6 +8,8 @@ These programs will produce a different result every time you refresh. Just righ
 
 [Grayscale Bytes](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
 
+![Grayscale Bytes Image](/images/grayscaleBytes.jpg)
+
 ## More of my work
 
 [fxhash](https://www.fxhash.xyz/u/KilledByAPixel) - All my most recent generative art on fxhash.
