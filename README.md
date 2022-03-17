@@ -8,10 +8,10 @@ Here you will find the source code for some of my longform generative works.
 
 ## More of my work
 
-https://www.fxhash.xyz/u/KilledByAPixel - All my most recent generative art on fxhash
+[fxhash](https://www.fxhash.xyz/u/KilledByAPixel) - All my most recent generative art on fxhash
 
-https://www.dwitter.net/u/KilledByAPixel - I have released over 1000 programs on Dwitter
+[dwitter](https://www.dwitter.net/u/KilledByAPixel) - I have released over 1000 programs on Dwitter
 
-https://generative.3d2k.com/ - I made a special website to share my best work
+[portfolio](https://generative.3d2k.com) - I made a special website to share my best work
 
 Thank you. ✌️😄 - FF
