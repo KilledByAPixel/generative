@@ -10,10 +10,10 @@ These programs will produce a different result every time you refresh. Just righ
 
 ## More of my work
 
-[fxhash](https://www.fxhash.xyz/u/KilledByAPixel) - All my most recent generative art on fxhash
+[fxhash](https://www.fxhash.xyz/u/KilledByAPixel) - All my most recent generative art on fxhash.
 
-[dwitter](https://www.dwitter.net/u/KilledByAPixel) - I have released over 1000 programs on Dwitter
+[dwitter](https://www.dwitter.net/u/KilledByAPixel) - I have released over 1000 programs on Dwitter.
 
-[portfolio](https://generative.3d2k.com) - I made a special website to share my best work
+[portfolio](https://generative.3d2k.com) - I made a special website to share my best work.
 
-Thank you. ✌️😄 -FF
+Thank you. ✌️😄 - FF
