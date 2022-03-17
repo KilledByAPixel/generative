@@ -2,17 +2,16 @@
 
 Here you will find the source code for some of my longform generative works.
 
-You can see the some of my best genertive art on fxhash...
+## Open source generative art
 
-https://www.fxhash.xyz/u/KilledByAPixel
+[Grayscale Bytes](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
 
-I have released over 1000 generative art programs on Dwitter...
+## More of my work
 
-https://www.dwitter.net/u/KilledByAPixel
+https://www.fxhash.xyz/u/KilledByAPixel - All my most recent generative art on fxhash
 
-I made a special website to share my best work...
+https://www.dwitter.net/u/KilledByAPixel - I have released over 1000 programs on Dwitter
 
-https://generative.3d2k.com/
+https://generative.3d2k.com/ - I made a special website to share my best work
 
-Thank you. ✌️😄
- - FF
+Thank you. ✌️😄 - FF
