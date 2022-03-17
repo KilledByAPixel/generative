@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Grayscale Bytes - Generative Art by Frank Force</title>
+    <script id="fxhash-snippet">
+    //---- do not edit the following code (you can indent as you wish)
+    let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
+    var fxhash = "oo" + Array(49).fill(0).map(_=>alphabet[(Math.random()*alphabet.length)|0]).join('')
+    let b58dec = (str) => str.split('').reduce((p,c,i) => p + alphabet.indexOf(c) * (Math.pow(alphabet.length, str.length-i-1)), 0)
+    let fxhashTrunc = fxhash.slice(2)
+    let regex = new RegExp(".{" + ((fxhash.length/4)|0) + "}", 'g')
+    let hashes = fxhashTrunc.match(regex).map(h => b58dec(h))
+    let sfc32 = (a, b, c, d) => {
+        return () => {
+        a |= 0; b |= 0; c |= 0; d |= 0
+        var t = (a + b | 0) + d | 0
+        d = d + 1 | 0
+        a = b ^ b >>> 9
+        b = c + (c << 3) | 0
+        c = c << 21 | c >>> 11
+        c = c + t | 0
+        return (t >>> 0) / 4294967296
+        }
+    }
+    var fxrand = sfc32(...hashes)
+    //---- /do not edit the following code
+    </script>
+<style>
+html { height: 100%; }
+body
+{
+    height: 100%;
+    margin: 0;
+    background:#333;
+	display: flex; 
+	justify-content: center;
+	align-items: center;
+}
+canvas
+{ 
+    box-shadow: 0px 0px 50px 20px #000;
+    max-height: 100%;
+    max-width: 100%;
+}
+</style>
+</head>
+<body>
+<canvas id=c width=2048 height=2048></canvas>
+<script>
+
+'use strict';
+
+/*
+
+Grayscale Bytes
+by Frank Force @KilledByAPixel
+
+Tiny code monochrome composition study.
+Code is based on my 140 byte dweet.
+https://www.dwitter.net/d/24449
+
+*/
+
+const canvas2 = document.createElement('canvas');
+canvas2.width = c.width;
+canvas2.height = c.height;
+const x = canvas2.getContext('2d');
+const RGB = (r,g,b,a=1) => `rgba(${r|0},${g|0},${b|0},${a})`;
+const FPS = 60;
+let frame = 0;
+
+const invert        = fxrand() < .5;
+const color         = fxrand() < .5;
+const varyColor     = color && fxrand() < .4;
+const rotate        = fxrand() < .8;
+const varyRotate    = rotate && fxrand() < .4;
+const noiseHeavy    = fxrand() < .2;
+const noiseColor    = fxrand() < .3;
+const noiseHighFreq = fxrand() < .8;
+const hasMargin     = fxrand() < .5;
+const thickMargin   = hasMargin && fxrand() < .3;
+let color1 = color ? RGB(fxrand()*99, fxrand()*99, fxrand()*99) : '#000';
+let color2 = color ? RGB(255-fxrand()*99, 255-fxrand()*99, 255-fxrand()*99) : '#fff';
+
+window.$fxhashFeatures = {
+  "Color": varyColor ? 'Varied' : color ? 'Monochrome' : 'Grayscale',
+  "Inverted": invert ? 'Yes' : 'No',
+  "Rotation": varyRotate ? 'Varied' : rotate ? 'Same' : 'None',
+  "Noise Color": noiseColor ? 'RGB' : 'Gray',
+  "Noise Weight": noiseHeavy ? 'Heavy' : 'Light',
+  "Noise Frequency": noiseHighFreq ? 'High' : 'Low',
+  "Margin": thickMargin ? 'Fat' : hasMargin? 'Thin' : 'None',
+};
+console.table($fxhashFeatures);
+console.log(fxhash);
+
+const u = t=> // main draw update
+{
+    if (t>10)
+        return;
+
+    const r = (max)=> fxrand()*max|0;
+    if (!t)
+    {
+        // background fill
+        x.fillStyle = invert ? color1 : color2;
+        x.fillRect(0, 0, c.width, c.height);
+        if (rotate)
+            x.rotate(r(2e3))
+    }
+
+    if (varyColor && (fxrand() < .05 || !t))
+    {
+        // apply a random color
+        const c = RGB(r(255), r(255), r(255));
+        invert ? color2 = c : color1 = c;
+    }
+
+    if (varyRotate && frame%120==0)
+    {
+        // rotate a quarter turn
+        x.rotate(Math.PI/4);
+    }
+    
+    // setup the shape parameters
+    const X = r(6e3) - 3e3;
+    const Y = r(6e3) - 3e3;
+    const h = r(700);
+    const w = r(700);
+    const v = r(w);
+    const f = r(1e6);
+
+    // draw the shape
+    x.fillStyle = invert ? color2 : color1;
+    for(let i=w*h;i--;)
+        x.fillRect(X+i%w, Y+i/w, Math.sin(t), Math.sin((i*f|0)%v)/t/t)
+}
+
+function loop(frameTime)
+{
+    // update draw
+    const time = frame++ / FPS;
+    u(time);
+
+    // composite image
+    const x = c.getContext('2d');
+    c.width |= 0
+    x.save();
+    x.fillStyle = invert ? color1 : color2;
+    x.fillRect(0, 0, c.width, c.height);
+    if (hasMargin)
+    {
+        // apply margin
+        const margin = 50;
+        x.rect(margin, margin, c.width-margin*2, c.height-margin*2);
+        x.clip();
+    }
+    x.drawImage(canvas2, 0, 0);
+    x.restore();
+
+    // apply noise
+    x.globalAlpha = noiseHeavy? .2 : .1;
+    x.drawImage(noiseCanvas, 0, 0, c.width, c.height);
+    
+    // next frame
+    requestAnimationFrame(loop);
+}
+
+// generate noise overlay
+const noiseScale = noiseHighFreq ? 2 : 4;
+const noiseCanvas = document.createElement('canvas');
+noiseCanvas.width = c.width/noiseScale;
+noiseCanvas.height = c.height/noiseScale;
+const noiseImageData = new ImageData(noiseCanvas.width, noiseCanvas.height);
+for(let i = 0; i < noiseImageData.data.length; i += 4)
+{
+    const v = fxrand()*256|0;
+    for(let j = 4; j--;)
+        noiseImageData.data[i+j] = j==3? 255: noiseColor? fxrand()*256|0 : v;
+}
+noiseCanvas.getContext('2d').putImageData(noiseImageData, 0, 0);
+
+loop();
+
+</script>
+</body>
+</html>
