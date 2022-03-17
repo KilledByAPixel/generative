@@ -14,4 +14,4 @@ Here you will find the source code for some of my longform generative works.
 
 [portfolio](https://generative.3d2k.com) - I made a special website to share my best work
 
-Thank you. ☮♥☻␌
+Thank you. ✌️😄 -FF
