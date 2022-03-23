@@ -7,8 +7,10 @@ These programs will produce a different result every time you refresh. Just righ
 ## Open source generative art
 
 [Grayscale Bytes](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
+[Byte City Night](https://killedbyapixel.github.io/generative/byteCityNight.html) - An abstract cityscape using bitwise operators.
 
 ![Grayscale Bytes Image](/images/grayscaleBytes.jpg)
+![Byte City Night Image](/images/byteCityNight.jpg)
 
 ## More of my work
 
