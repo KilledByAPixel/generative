@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Byte City Night</title>
+    <script id="fxhash-snippet">
+      // FXHASH BOILER PLATE CODE
+      //---- do not edit the following code (you can indent as you wish)
+      let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
+      var fxhash = "oo" + Array(49).fill(0).map(_=>alphabet[(Math.random()*alphabet.length)|0]).join('')
+      let b58dec = str=>[...str].reduce((p,c)=>p*alphabet.length+alphabet.indexOf(c)|0, 0)
+      let fxhashTrunc = fxhash.slice(2)
+      let regex = new RegExp(".{" + ((fxhash.length/4)|0) + "}", 'g')
+      let hashes = fxhashTrunc.match(regex).map(h => b58dec(h))
+      let sfc32 = (a, b, c, d) => {
+        return () => {
+          a |= 0; b |= 0; c |= 0; d |= 0
+          var t = (a + b | 0) + d | 0
+          d = d + 1 | 0
+          a = b ^ b >>> 9
+          b = c + (c << 3) | 0
+          c = c << 21 | c >>> 11
+          c = c + t | 0
+          return (t >>> 0) / 4294967296
+        }
+      }
+      var fxrand = sfc32(...hashes)
+      //---- /do not edit the following code
+    </script>
+<style>
+html { height: 100%; }
+body
+{
+    height: 100%;
+    margin: 0;
+    background:#111;
+	display: flex; 
+	justify-content: center;
+	align-items: center;
+}
+canvas
+{
+    max-height: 100%;
+    max-width: 100%;
+}
+</style>
+</head>
+<body>
+<canvas id=mainCanvas width=4096 height=2048></canvas>
+<script>
+
+'use strict';
+
+/*
+
+Byte City Night
+
+An abstract cityscape using bitwise operators.
+Right click to download a 4096x2048 image.
+
+By Frank Force @KilledByAPixel
+Made with vanilla JavaScript
+
+Based on this dweet by me...
+https://www.dwitter.net/d/17507
+
+I made a video that explains how it works...
+https://www.youtube.com/watch?v=vnx8kI4EcVc
+
+*/
+
+///////////////////////////////////////////////////////////////////////////////
+// FX HASH ARTWORK
+
+let isInverted;
+let isGrayscale;
+let isRainbow;
+let windowOperatorType;
+let backgroundOperatorType;
+let seedX, seedY, startY;
+let brightBuildings;
+let windowHueOffset;
+let roomsPerSecond;
+let extraHueOffset;
+let startScale;
+let foreSat;
+let shiftHue;
+let bigMoon;
+let earthquake;
+let thinBuildings;
+let neonHue;
+let moonCount;
+
+function init()
+{
+    // init canvas
+    canvas.width = mainCanvas.width;
+    canvas.height = mainCanvas.height;
+
+    // select operators
+    const operatorTypes = ['&','|','^','+','*','/','-^+'];
+    windowOperatorType = random.int(operatorTypes.length);
+    backgroundOperatorType = random.int(operatorTypes.length);
+    startScale = random.int(5,9);
+
+    // select moon count
+    let moonCount = random.int(1,4);
+    if (random.bool(.05))
+        moonCount = random.int(30,60);
+    if (random.bool(.04))
+        moonCount = 0;
+    if (random.bool(.05)) 
+        bigMoon = moonCount = 1;
+
+    // select features
+    brightBuildings = random.bool(.05);
+    isInverted = random.bool(.04);
+    earthquake = random.bool(.04);
+    thinBuildings = random.bool(.03);
+    isGrayscale = random.bool(.1);
+    isRainbow = !isGrayscale && random.bool(.03);
+    shiftHue = !isRainbow && !isGrayscale && random.bool(.1);
+
+    let effectText = '';
+    if (earthquake)
+        effectText += (effectText.length?' ':'')+'Earthquake';
+    if (isInverted)
+        effectText += (effectText.length?' ':'')+'Inverted';
+    if (brightBuildings)
+        effectText += (effectText.length?' ':'')+'Bright Windows';
+    if (thinBuildings)
+        effectText += (effectText.length?' ':'')+'Thin';
+    if (effectText == '')
+        effectText = 'None';
+
+    let colorText = 
+        isGrayscale ? 'Grayscale' :
+        isRainbow ? 'isRainbow' :
+        shiftHue ? 'Shifted' :
+        'Normal';
+
+    let moonText = 
+        bigMoon ? 'Big' : 
+        moonCount>5 ? 'Many' :
+        moonCount ? moonCount :
+        'None';
+
+    window.$fxhashFeatures = 
+    {
+        'Window Operator':operatorTypes[windowOperatorType],
+        'Background Operator':operatorTypes[backgroundOperatorType],
+        'Moons':moonText,
+        'Colors':colorText,
+        'Extras':effectText
+    }
+    console.table(window.$fxhashFeatures)
+    console.log(fxhash);
+    console.log('Byte City Night\nBy Frank Force @KilledByAPixel');
+
+    // setup parameters
+    extraHueOffset = shiftHue ? .5 : isRainbow ? random.float() : 0;
+    neonHue = random.float();
+    seedX = random.int(1e3);
+    seedY = random.int(1e3);
+    windowHueOffset = random.float(0,.15);
+    roomsPerSecond = random.float(2,3);
+    startY = random.float(99,400);
+    foreSat = random.float(isRainbow?.4:.1,1);
+
+    drawBackground();
+    update();
+}
+
+function drawBackground()
+{
+    const backgroundHueIntensity= random.int(50,100);
+    const backgroundStartBright = random.float(0,.2);
+    const backgroundSat = random.float(.2,.9);
+    const hueOffset = random.float(.4,.75);
+    const backBrightness = random.float(200,600);
+    const backBrighHue = random.int(500,2e3);
+    const scale = random.int(8,33);
+    const w = Math.ceil(canvas.width/scale);
+    const h = Math.ceil(canvas.height/scale);
+
+    // draw sky
+    let seedScale = random.int(1e6);
+    for(let k=w*h; k--;)
+    {
+        const i=k%w, j=k/w|0;
+        const o = applyOperator(backgroundOperatorType,i,j);
+        const bright = Math.cos(o*seedScale);
+        const hue = bright*backgroundHueIntensity;
+
+        context.fillStyle = hsl(
+            extraHueOffset+hueOffset+hue/800+j/(isRainbow?100:300),
+            backgroundSat+hue/1800,
+            backgroundStartBright+hue/backBrighHue+j/backBrightness);
+        context.fillRect(i*scale,j*scale,scale,scale);
+    }
+
+    // draw moons
+    context.save();
+    context.globalCompositeOperation = 'difference';
+    context.fillStyle = '#fff';
+    for(let i=moonCount;i--;)
+    {
+        const m = 99;
+        const r = bigMoon?random.float(500,700):random.float(150,300);
+        const x = random.float(m*2+r,canvas.width-m*2-r);
+        const y = random.float(m+r,m+r+300);
+        context.beginPath();
+        context.arc(x,y,r,0,9);
+        context.fill();
+    }
+    context.restore();
+}
+
+function update()
+{
+    // update time
+    const FPS = 60;
+    const t = frame++ / FPS;
+
+    // update neon glow
+    mainCanvas.style.boxShadow=`0px 0px 50px ${10+5*Math.sin(t*PI/2)}px `+
+        hsl((isRainbow?t/60:0)+neonHue,1,isGrayscale?1:.5);
+
+    // prepare to draw buildings
+    const roomsWide = thinBuildings? random.int(1,4) : random.int(5,12);
+    const Y = startY+(t*60)*7*roomsWide/roomsPerSecond;
+    if (Y>canvas.height)
+        return;
+
+    context.save();
+    if (earthquake)
+        context.rotate(random.floatSign(.1));
+
+    const X = random.float(-200,canvas.width+200);
+    const w = roomsWide*2+1;
+    const seedScale = random.int(1e6);
+    const scale = startScale+t*10|0;
+
+    // draw building
+    for(let k=1e4; k--;)
+    {
+        const i=k%w, j=k/w|0;
+        const o = applyOperator(windowOperatorType,i,j);
+        const bright = Math.cos(o*seedScale);
+
+        let h = windowHueOffset-j*.001
+            + bright*(.15-windowHueOffset) 
+            + (isRainbow ? t : 0);
+        let s = foreSat + random.floatSign(.1);
+        let l = bright;
+        if (i*j%2==0 && !brightBuildings)
+            l = s = 0;
+        context.fillStyle = hsl(h+extraHueOffset,s,l);
+        context.fillRect(
+            i*scale+X|0, j*scale+Y|0,
+            scale+earthquake, scale+earthquake);
+    }
+    context.restore();
+    compositeImage();
+    requestAnimationFrame(update);
+}
+
+function applyOperator(operator, x,y)
+{
+    x += seedX;
+    y += seedY;
+
+    switch (operator)
+    {
+        case 0:  return x&y;
+        case 1:  return x|y;
+        case 2:  return x^y;
+        case 3:  return x+y;
+        case 4:  return x*y;
+        case 5:  return x/y + y/x;
+        case 6:  return (x-y)^(x+y);
+        default: return 0;
+    }
+}
+
+function compositeImage()
+{
+    mainCanvas.width |= 0;
+    mainContext.drawImage(canvas,0,0,mainCanvas.width,mainCanvas.height);
+
+    // post process
+    if (isGrayscale)
+    {
+        mainContext.save();
+        mainContext.fillStyle = '#fff';
+        mainContext.globalCompositeOperation = 'saturation';
+        mainContext.fillRect(0,0,mainCanvas.width,mainCanvas.height);
+        mainContext.restore();
+    }
+    if (isInverted)
+    {
+        mainContext.save();
+        mainContext.fillStyle = '#fff';
+        mainContext.globalCompositeOperation = 'difference';
+        mainContext.fillRect(0,0,mainCanvas.width,mainCanvas.height);
+        mainContext.restore();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// SEEDED RANDOM GENERATOR
+
+class Random
+{
+    constructor(seed) { this.setSeed(seed); }
+    
+    setSeed(seed) { this.seed = seed|0; }
+    float(a=1, b=0)
+    {   // xorshift
+        this.seed ^= this.seed <<  13;
+        this.seed ^= this.seed >>> 17;
+        this.seed ^= this.seed <<  5;
+        return b + (a-b) * Math.abs(this.seed % 1e9) / 1e9;
+    }
+    floatSign(a, b)   { return this.float(a,b) * this.sign(); }
+    int(a=1, b=0)     { return this.float(a, b)|0; }
+    bool(chance = .5) { return this.float() < chance; }
+    sign()            { return this.bool() ? -1 : 1; }
+    angle(p=1)        { return this.float(PI*2*p); }
+}
+const random = new Random(fxrand()*1e9);
+
+///////////////////////////////////////////////////////////////////////////////
+// SIMPLE SHIM
+
+const PI      = Math.PI;
+const mod     = (a, b=1)=> ((a % b) + b) % b;
+const clamp   = (v, min=0, max=1)=> v < min ? min : v > max ? max : v;
+const hsl = (h=0,s=0,l=0,a=1) => `hsla(${mod(h)*360},${clamp(s)*100}%,${clamp(l)*100}%,${clamp(a)})`;
+
+let frame = 0;
+const mainContext = mainCanvas.getContext('2d');
+const canvas = document.createElement('canvas');
+const context = canvas.getContext('2d');
+
+///////////////////////////////////////////////////////////////////////////////
+// STARTUP
+
+init();
+
+</script>
+</body>
+</html>
