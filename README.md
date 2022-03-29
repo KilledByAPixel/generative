@@ -8,15 +8,17 @@ These programs will produce a different result every time you refresh. Just righ
 
 ### [Grayscale Bytes](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
 
-[Based on this Dweet by me.](https://www.dwitter.net/d/24449)
+[Based on this Dweet by me](https://www.dwitter.net/d/24449)
+
+[Grayscale Bytes on fxhash](https://www.fxhash.xyz/generative/2370)
 
 ### [Byte City Night](https://killedbyapixel.github.io/generative/byteCityNight.html) - An abstract cityscape using bitwise operators.
 
-[Based on this Dweet by me.](https://www.dwitter.net/d/17507)
+[Based on this Dweet by me](https://www.dwitter.net/d/17507)
 
-[I wrote an article that explains how this one works.](https://frankforce.com/dissecting-a-dweet-9-city-sunset/)
+[I made a video that explains how the code works](https://youtu.be/vnx8kI4EcVc)
 
-[I also made a video about it.](https://youtu.be/vnx8kI4EcVc)
+[Byte City Night on fxhash](https://www.fxhash.xyz/generative/10914)
 
 ![Grayscale Bytes Image](/images/grayscaleBytes.jpg)
 
