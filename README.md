@@ -4,6 +4,16 @@ Here you will find the source code for some of my longform generative works.
 
 These programs will produce a different result every time you refresh. Just right click to save.
 
+# Chaosplot
+
+- [Live Demo](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
+
+- [Based on this Dweet by me](https://www.dwitter.net/d/24661)
+
+- [Chaosplot on fxhash]([https://www.fxhash.xyz/generative/2370](https://www.fxhash.xyz/generative/14874))
+
+![Chaosplot Image](/images/chaosplot.jpg)
+
 # Grayscale Bytes
 
 - [Live Demo](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
