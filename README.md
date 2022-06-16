@@ -6,7 +6,7 @@ These programs will produce a different result every time you refresh. Just righ
 
 # Chaosplot
 
-- [Live Demo](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - A plottable algorithm of chaos vs order.
+- [Live Demo](https://killedbyapixel.github.io/generative/chaosplot.html) - A plottable algorithm of chaos vs order.
 
 - [Based on this Dweet by me](https://www.dwitter.net/d/24661)
 
