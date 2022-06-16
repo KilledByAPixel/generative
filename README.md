@@ -6,11 +6,11 @@ These programs will produce a different result every time you refresh. Just righ
 
 # Chaosplot
 
-- [Live Demo](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - Tiny code monochrome composition study.
+- [Live Demo](https://killedbyapixel.github.io/generative/grayscaleBytes.html) - A plottable algorithm of chaos vs order.
 
 - [Based on this Dweet by me](https://www.dwitter.net/d/24661)
 
-- [Chaosplot on fxhash]([https://www.fxhash.xyz/generative/2370](https://www.fxhash.xyz/generative/14874))
+- [Chaosplot on fxhash](https://www.fxhash.xyz/generative/14874)
 
 ![Chaosplot Image](/images/chaosplot.jpg)
 
