@@ -4,6 +4,8 @@ Here you will find the source code for some of my longform generative works.
 
 These programs will produce a different result every time you refresh. Just right click to save.
 
+This code is not licensed for any use other then learning from. Check out some of my other MIT licenced projects if you are interested.
+
 # Chaosplot
 
 - [Live Demo](https://killedbyapixel.github.io/generative/chaosplot.html) - A plottable algorithm of chaos vs order.
